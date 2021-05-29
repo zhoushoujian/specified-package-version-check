@@ -1,0 +1,23 @@
+{
+  "name": "specified-package-version-check",
+  "version": "0.0.1",
+  "author": {
+		"name": "Shoujian Zhou",
+		"email": "qianchengyimeng@qq.com"
+	},
+  "license": "MIT",
+  "description": "check the specified package version is outdated or not",
+  "scripts": {
+    "test": "node check_test"
+  },
+  "main": "check.js",
+  "dependencies": {
+    "axios": "^0.21.1"
+  },
+  "homepage": "https://github.com/zhoushoujian/specified-package-version-check",
+  "keywords": [
+		"version",
+		"check",
+		"checker"
+	]
+}
