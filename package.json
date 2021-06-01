@@ -1,14 +1,15 @@
 {
-  "name": "specified-package-version-check",
-  "version": "0.0.1",
+  "name": "@shuyun-ep-team/specified-package-version-check",
+  "version": "0.0.2",
   "author": {
-		"name": "Shoujian Zhou",
-		"email": "qianchengyimeng@qq.com"
-	},
+    "name": "Shoujian Zhou",
+    "email": "qianchengyimeng@qq.com"
+  },
   "license": "MIT",
   "description": "check the specified package version is outdated or not",
   "scripts": {
-    "test": "node check_test"
+    "test": "node check_test",
+    "checkcode": "eslint check.js --fix"
   },
   "main": "check.js",
   "dependencies": {
@@ -16,8 +17,11 @@
   },
   "homepage": "https://github.com/zhoushoujian/specified-package-version-check",
   "keywords": [
-		"version",
-		"check",
-		"checker"
-	]
+    "version",
+    "check",
+    "checker"
+  ],
+  "devDependencies": {
+    "@shuyun-ep-team/eslint-config": "^1.3.6"
+  }
 }

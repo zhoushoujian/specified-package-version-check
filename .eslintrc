@@ -1,0 +1,13 @@
+{
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": ["@shuyun-ep-team/eslint-config/base", "@shuyun-ep-team/eslint-config/prettier"],
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module",
+    "createDefaultProgram": true
+  },
+  "rules": {}
+}

@@ -1,6 +1,6 @@
 # specified-package-version-check
 
-[ENGLISH] | [中文](https://github.com/zhoushoujian/specified-package-version-check/blob/master/readme_zh.md)
+[ENGLISH] | [中文](https://gitlab.shuyun.com/front-end-engineering1/enterprise-stores/shuyun-ep-team/specified-package-version-check/blob/master/readme_zh.md)
 
 ## Introduce
 
@@ -17,7 +17,7 @@ const checkDependenceVersion = require('specified-package-version-check')
 
 async function func() {
   await checkDependenceVersion({
-    dependenceArr: ['axios'],
+    dependenceArr: ['axios', 'specified-package-version-check', '@shuyun-ep-team/eslint-config'],
     ignoreCheck: false,
     onlyWarn: false,
     checkAllLocalDependencies: false

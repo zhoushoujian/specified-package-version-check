@@ -1,6 +1,6 @@
 # specified-package-version-check
 
-[中文] | [ENGLISH](https://github.com/zhoushoujian/specified-package-version-check/blob/master/readme.md)
+[中文] | [ENGLISH](https://gitlab.shuyun.com/front-end-engineering1/enterprise-stores/shuyun-ep-team/specified-package-version-check/blob/master/readme.md)
 
 ## 介绍
 
@@ -15,16 +15,16 @@ specified-package-version-check是一个可以检查指定的包版本是否过�
 //check.js
 const checkDependenceVersion = require('specified-package-version-check')
 
-async function func() {
+async function checkDependencies() {
   await checkDependenceVersion({
-    dependenceArr: ['axios'],
+    dependenceArr: ['axios', 'specified-package-version-check', '@shuyun-ep-team/eslint-config'],
     ignoreCheck: false,
     onlyWarn: false,
     checkAllLocalDependencies: false
   })
 }
 
-func()
+checkDependencies()
 
 ```
 
