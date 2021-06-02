@@ -44,7 +44,7 @@ function getNpmCurrentVersion(packageJsonName) {
 
 function fetchGlobalPackageCliNames() {
   return axios
-    .get('http://aaa')
+    .get('https://api-track.kylin.shuyun.com/monitor-service/global-package-names')
     .then(res => {
       return JSON.parse(res.data);
     })
@@ -151,14 +151,14 @@ async function checkDependenceVersion(config) {
   } else {
     logger.info('checking dependence...');
   }
-  await fetchGlobalPackageCliNames().then(async result => {
-    if (result && Array.isArray(result.packages)) {
-      for (const packageName of result.packages) {
-        // eslint-disable-next-line no-await-in-loop
-        await loadPackageInfo(outdatePackageInfo, packageName, true);
-      }
-    }
-  });
+  // await fetchGlobalPackageCliNames().then(async result => {
+  //   if (result && Array.isArray(result.packages)) {
+  //     for (const packageName of result.packages) {
+  //       // eslint-disable-next-line no-await-in-loop
+  //       await loadPackageInfo(outdatePackageInfo, packageName, true);
+  //     }
+  //   }
+  // });
   return Promise.all(
     checkDependenceVersionArr.map(packageName => loadPackageInfo(outdatePackageInfo, packageName, false)),
   ).then(() => {
