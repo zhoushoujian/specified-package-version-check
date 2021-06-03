@@ -9,7 +9,8 @@
   "description": "check the specified package version is outdated or not",
   "scripts": {
     "test": "node check_test",
-    "checkcode": "eslint check.js --fix"
+    "checkcode": "eslint check.js",
+    "publishToNpm": "node publish"
   },
   "main": "check.js",
   "dependencies": {
