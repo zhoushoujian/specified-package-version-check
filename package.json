@@ -13,7 +13,8 @@
   },
   "main": "check.js",
   "dependencies": {
-    "axios": "^0.21.1"
+    "axios": "^0.21.1",
+    "console-format": "^1.0.1"
   },
   "homepage": "https://github.com/zhoushoujian/specified-package-version-check",
   "keywords": [

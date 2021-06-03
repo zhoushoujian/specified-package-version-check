@@ -1,43 +1,17 @@
 /* eslint-disable import/no-dynamic-require */
 const axios = require('axios');
 const { exec } = require('child_process');
-
-const logger = {};
-const colors = {
-  Reset: '\x1b[0m',
-  FgRed: '\x1b[31m',
-  FgGreen: '\x1b[32m',
-  FgYellow: '\x1b[33m',
-  FgBlue: '\x1b[34m',
-};
-const logFunc = function (...args) {
-  console.log(...args);
-};
-'debug:debug:FgBlue,info:info:FgGreen,warn:warn:FgYellow,error:error:FgRed,log:log:FgGreen'
-  .split(',')
-  .forEach(function (logColor) {
-    const [log, info, color] = logColor.split(':');
-    logger[log] = function (...args) {
-      // eslint-disable-next-line no-useless-call
-      logFunc.apply(null, [
-        `${colors[color]}[${getTime()}] [${info.toUpperCase()}] [${process.pid}] [specified-package-version-check] ${
-          colors.Reset
-        } `,
-        ...args,
-        colors.Reset,
-      ]);
-    };
-  });
+require('console-format');
 
 function getNpmCurrentVersion(packageJsonName) {
-  logger.info('package', packageJsonName);
+  console.info('package', packageJsonName);
   return axios
     .get(`http://npm.kylin.shuyun.com/${packageJsonName}`)
     .then(function (res) {
       return res.data['dist-tags'].latest;
     })
     .catch(function (err) {
-      logger.error('getNpmCurrentVersion err', err.stack || err.toString());
+      console.error('getNpmCurrentVersion err', err.stack || err.toString());
       throw err;
     });
 }
@@ -49,7 +23,7 @@ function fetchGlobalPackageCliNames() {
       return JSON.parse(res.data);
     })
     .catch(err => {
-      logger.warn('fetchGlobalPackageNames err', err);
+      console.warn('fetchGlobalPackageNames err', err);
     });
 }
 
@@ -79,7 +53,7 @@ function loadPackageInfo(outdatePackageInfo, packageName, isGlobal) {
               note: isGlobal ? `全局${packageName}CLI版本已过期，请升级` : '',
             });
           } else {
-            logger.info(
+            console.info(
               `${packageName} => ${
                 isGlobal ? 'globalVersion' : 'localVersion'
               } :${localVersion} => remoteVersion:${remoteVersion} => latest`,
@@ -114,30 +88,30 @@ async function checkDependenceVersion(config) {
     }
     checkDependenceVersionArr = [...new Set(config.dependenceArr)];
     if (ignoreCheck) {
-      logger.info('npm package version check has been ignored');
+      console.info('npm package version check has been ignored');
       return Promise.resolve(config);
     }
     if (onlyWarnInConfig) {
       onlyWarn = onlyWarnInConfig;
     }
     if (checkAllLocalDependencies) {
-      logger.info('checking all local dependencies...');
+      console.info('checking all local dependencies...');
       const result = [];
       return new Promise(res => {
         const child = exec('npm outdate');
         child.stdout.on('data', function (data) {
           if (onlyWarn) {
-            logger.warn('outdate packages: ', data);
+            console.warn('outdate packages: ', data);
           } else {
-            logger.error('outdate packages: ', data);
+            console.error('outdate packages: ', data);
           }
           result.push(data);
         });
         child.stderr.on('data', function (data) {
-          logger.warn('outdate: ', data);
+          console.warn('outdate: ', data);
         });
         child.on('exit', function (code) {
-          logger.info('check all local dependencies finished! ', code);
+          console.info('check all local dependencies finished! ', code);
           if (result.length && !onlyWarn) {
             process.exit(1);
           }
@@ -147,9 +121,9 @@ async function checkDependenceVersion(config) {
     }
   }
   if (!checkDependenceVersionArr.length) {
-    logger.warn('no local dependence will be checked!');
+    console.warn('no local dependence will be checked!');
   } else {
-    logger.info('checking dependence...');
+    console.info('checking dependence...');
   }
   // await fetchGlobalPackageCliNames().then(async result => {
   //   if (result && Array.isArray(result.packages)) {
@@ -164,13 +138,13 @@ async function checkDependenceVersion(config) {
   ).then(() => {
     if (outdatePackageInfo.length) {
       if (onlyWarn) {
-        logger.warn('following packages are outdated: ', outdatePackageInfo);
+        console.warn('following packages are outdated: ', outdatePackageInfo);
       } else {
-        logger.error('following packages are outdated: ', outdatePackageInfo);
+        console.error('following packages are outdated: ', outdatePackageInfo);
         process.exit(1);
       }
     } else {
-      logger.info('all dependencies check success!');
+      console.info('all dependencies check success!');
       return config;
     }
   });
