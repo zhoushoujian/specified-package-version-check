@@ -3,11 +3,16 @@
     "es6": true,
     "node": true
   },
-  "extends": ["@shuyun-ep-team/eslint-config/base", "@shuyun-ep-team/eslint-config/prettier"],
+  "extends": [
+    "@shuyun-ep-team/eslint-config"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
     "createDefaultProgram": true
   },
-  "rules": {}
+  "rules": {
+    "global-require": 0,
+    "import/no-dynamic-require": 0
+  }
 }

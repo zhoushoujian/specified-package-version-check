@@ -1,14 +1,17 @@
-const checkDependenceVersion = require('./check')
+// eslint-disable-next-line import/extensions
+import checkDependenceVersion from './check';
 
 async function func() {
   await checkDependenceVersion({
     dependenceArr: ['axios', '@shuyun-ep-team/eslint-config'],
     ignoreCheck: false,
     onlyWarn: false,
-    checkAllLocalDependencies: false
-  })
-  
+    checkAllLocalDependencies: false,
+    ignoreSelf: true,
+    remoteUrl: '',
+  });
+
   console.log('end');
 }
 
-func()
+func();

@@ -21,6 +21,8 @@ async function func() {
     ignoreCheck: false,
     onlyWarn: false,
     checkAllLocalDependencies: false,
+    ignoreSelf: false,
+    remoteUrl: '',
   });
 
   console.log('end');
@@ -31,9 +33,28 @@ func();
 
 ## API
 
-| Property                  | Description                                | Type     | Default | Version |
-| :------------------------ | :----------------------------------------- | :------- | :------ | :------ |
-| dependenceArr             | dependence need to be checked              | string[] | []      | 0.0.1   |
-| ignoreCheck               | skip check                                 | boolean  | false   | 0.0.1   |
-| onlyWarn                  | only warn when specified package outdated  | boolean  | false   | 0.0.1   |
-| checkAllLocalDependencies | check all packages version in package.json | boolean  | false   | 0.0.1   |
+| Property                  | Description                                  | Type     | Default                                                                              | required | Version |
+| :------------------------ | :------------------------------------------- | :------- | :----------------------------------------------------------------------------------- | -------- | :------ |
+| dependenceArr             | dependence need to be checked                | string[] | []                                                                                   | true     | 1.0.0   |
+| ignoreCheck               | skip check                                   | boolean  | false                                                                                | false    | 1.0.0   |
+| onlyWarn                  | only warn when specified package outdated    | boolean  | false                                                                                | false    | 1.0.0   |
+| checkAllLocalDependencies | check all packages version in package.json   | boolean  | false                                                                                | false    | 1.0.0   |
+| ignoreSelf                | ignore check specified-package-version-check | boolean  | false                                                                                | false    | 2.0.0   |
+| remoteUrl                 | check specified npm global cli version       | string   | <https://api-track.kylin.shuyun.com/monitor-service/static/global-package-info.json> | false    | 2.0.0   |
+
+false
+
+## something about remoteUrl json
+
+`json content construct must be as following`
+
+```json
+{
+  "info": [
+    {
+      "command": "show version command", //e.g. yarn -v
+      "name": "package name" //e.g. yarn
+    }
+  ]
+}
+```
