@@ -20,7 +20,7 @@ function publish() {
 
 function syncTaoBao() {
   console.log('正在同步淘宝镜像');
-  return executeCmd('curl -X PUT https://npm.taobao.org/sync/console-format', 'syncTaoBao');
+  return executeCmd('curl -X PUT https://npm.taobao.org/sync/specified-package-version-check', 'syncTaoBao');
 }
 
 function executeCmd(cmd, logInfo) {

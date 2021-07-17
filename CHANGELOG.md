@@ -1,6 +1,6 @@
 # specified-package-version-check
 
-## 2.0.0 (2021/7/17)
+## 2.0.2 (2021/7/17)
 
 1. 自检查 specified-package-version-check 版本,可配置忽略
 2. 支持从远端获取需要检查的 npm cli 版本

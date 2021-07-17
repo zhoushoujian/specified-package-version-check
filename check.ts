@@ -1,7 +1,8 @@
-import axios from 'axios';
-import { exec } from 'child_process';
-import { name } from './package.json';
-import 'console-format';
+const axios = require('axios');
+const { exec } = require('child_process');
+const semver = require('semver');
+const { name } = require('./package.json');
+require('console-format');
 
 interface IConfig {
   dependenceArr: string[];
@@ -16,10 +17,10 @@ function getNpmCurrentVersion(packageJsonName: string) {
   console.info('package', packageJsonName);
   return axios
     .get(`http://npm.kylin.shuyun.com/${packageJsonName}`)
-    .then(function (res) {
+    .then(function (res: any) {
       return res.data['dist-tags'].latest;
     })
-    .catch(function (err) {
+    .catch(function (err: any) {
       console.error(name, ' :getNpmCurrentVersion err', err.stack || err.toString());
       throw err;
     });
@@ -28,10 +29,10 @@ function getNpmCurrentVersion(packageJsonName: string) {
 function fetchGlobalPackageCliNames(remoteUrl: string) {
   return axios
     .get(remoteUrl || 'https://api-track.kylin.shuyun.com/monitor-service/static/global-package-info.json')
-    .then(res => {
+    .then((res: any) => {
       return res.data;
     })
-    .catch(err => {
+    .catch((err: any) => {
       console.warn(name, ' :fetchGlobalPackageNames err', err.stack || err.toString());
       return {};
     });
@@ -54,7 +55,7 @@ function loadPackageInfo(outdatePackageInfo: IOutdatePackageInfo[], packageName:
       if (!globalVersion) {
         outdatePackageInfo.push({
           name: packageName,
-          err,
+          err: err.stack || err.toString(),
         });
       }
     }
@@ -62,8 +63,8 @@ function loadPackageInfo(outdatePackageInfo: IOutdatePackageInfo[], packageName:
   if (packageInfo || globalVersion) {
     const localVersion = globalVersion || packageInfo.version;
     return getNpmCurrentVersion(packageName)
-      .then(remoteVersion => {
-        if (remoteVersion > localVersion) {
+      .then((remoteVersion: string) => {
+        if (semver.gt(remoteVersion, localVersion)) {
           outdatePackageInfo.push({
             name: packageName,
             localVersion,
@@ -78,13 +79,13 @@ function loadPackageInfo(outdatePackageInfo: IOutdatePackageInfo[], packageName:
           );
         }
       })
-      .catch(err => {
+      .catch((err: any) => {
         outdatePackageInfo.push({
           name: packageName,
           localVersion,
           remoteVersion: 'unknown',
           note: globalVersion ? 'global' : 'local',
-          err,
+          err: err.stack || err.toString(),
         });
       });
   } else {
@@ -92,6 +93,7 @@ function loadPackageInfo(outdatePackageInfo: IOutdatePackageInfo[], packageName:
   }
 }
 
+//@ts-ignore
 async function checkDependenceVersion(config: IConfig) {
   let checkDependenceVersionArr: string[] = [name],
     onlyWarn = false;
@@ -114,7 +116,7 @@ async function checkDependenceVersion(config: IConfig) {
       const result: string[] = [];
       return new Promise(res => {
         const child = exec('npm outdate');
-        child.stdout?.on('data', function (data) {
+        child.stdout?.on('data', function (data: string) {
           if (onlyWarn) {
             console.warn(name, ' :outdate packages: ', data);
           } else {
@@ -122,10 +124,10 @@ async function checkDependenceVersion(config: IConfig) {
           }
           result.push(data);
         });
-        child.stderr?.on('data', function (data) {
+        child.stderr?.on('data', function (data: string) {
           console.warn(name, ' :outdate: ', data);
         });
-        child.on('exit', function (code) {
+        child.on('exit', function (code: number) {
           console.info('check all local dependencies finished! ', code);
           if (result.length && !onlyWarn) {
             process.exit(1);
@@ -143,13 +145,13 @@ async function checkDependenceVersion(config: IConfig) {
         return new Promise(res => {
           let finished = false;
           const child = exec(item.command);
-          child.stdout?.on('data', async function (data) {
+          child.stdout?.on('data', async function (data: string) {
             data = data.replace('\n', '').replace('\r', '');
             await loadPackageInfo(outdatePackageInfo, item.name, data);
             finished = true;
             res(0);
           });
-          child.stderr?.on('data', function (_data) {
+          child.stderr?.on('data', function () {
             // command execute fail
             // console.warn('npm global cli stderr: ', data);
             finished = true;
@@ -192,4 +194,4 @@ async function checkDependenceVersion(config: IConfig) {
   return outdatePackageInfo;
 }
 
-export default checkDependenceVersion;
+module.exports = checkDependenceVersion;

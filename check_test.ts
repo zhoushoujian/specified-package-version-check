@@ -1,5 +1,5 @@
-// eslint-disable-next-line import/extensions
-import checkDependenceVersion from './check';
+//@ts-ignore
+const checkDependenceVersion = require('./check');
 
 async function func() {
   await checkDependenceVersion({
