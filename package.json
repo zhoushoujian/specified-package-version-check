@@ -10,7 +10,7 @@
   "scripts": {
     "test": "ts-node --transpile-only check_test",
     "checkcode": "eslint check.ts",
-    "build": "tsc",
+    "build": "npm run checkcode && tsc",
     "publishToNpm": "npm run build && node publish"
   },
   "main": "check.js",
