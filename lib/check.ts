@@ -1,7 +1,7 @@
 const axios = require('axios');
 const { exec } = require('child_process');
 const semver = require('semver');
-const { name } = require('./package.json');
+const { name } = require('../package.json');
 require('console-format');
 
 interface IConfig {

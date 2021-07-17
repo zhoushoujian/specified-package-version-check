@@ -8,10 +8,11 @@
   "license": "MIT",
   "description": "check the specified package version is outdated or not",
   "scripts": {
-    "test": "ts-node --transpile-only check_test",
-    "checkcode": "eslint check.ts",
+    "test": "ts-node --transpile-only ./lib/check_test",
+    "build:test": "node dist/check_test",
+    "checkcode": "eslint lib/check.ts",
     "build": "npm run checkcode && tsc",
-    "publishToNpm": "npm run build && node publish"
+    "publishToNpm": "npm run build && node lib/publish"
   },
   "main": "dist/check.js",
   "dependencies": {
