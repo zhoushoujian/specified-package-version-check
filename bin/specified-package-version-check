@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+
+const os = require('os');
+const checkDependenceVersion = require('../dist/check');
+
+const pwd = process.cwd().split('node_modules')[0];
+const projectFolder = ['/', '\\'].includes(pwd[pwd.length - 1])
+  ? pwd
+  : os.type() === 'Windows_NT'
+  ? pwd + '\\'
+  : pwd + '/';
+
+const configFile = projectFolder + '.spvrc.js';
+let configContent = {};
+try {
+  configContent = require(configFile);
+} catch (_err) {
+  console.warn('Not found .spvrc.js in project root folder, check please!');
+}
+
+checkDependenceVersion(configContent);

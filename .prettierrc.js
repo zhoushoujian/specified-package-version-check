@@ -1,3 +1,3 @@
 module.exports = {
-  ...require("@shuyun-ep-team/eslint-config/.prettierrc"),
+  ...require('eslint-config-ts-base/.prettierrc'),
 };

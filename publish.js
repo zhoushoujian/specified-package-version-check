@@ -1,6 +1,6 @@
+/* eslint-disable no-console */
 const { exec } = require('child_process');
 
-let cancelChangeNpmConfig = () => {};
 let useTaobaoMirror = false;
 
 function getNpmConfig() {
@@ -15,7 +15,7 @@ function changeNpmConfig() {
 
 function publish() {
   console.log('开始发布');
-  return executeCmd('npm publish --registry http://registry.npmjs.org', 'publish');
+  return executeCmd('npm publish --registry https://registry.npmjs.org', 'publish');
 }
 
 function syncTaoBao() {
@@ -24,16 +24,12 @@ function syncTaoBao() {
 }
 
 function executeCmd(cmd, logInfo) {
-  return new Promise(res => {
+  return new Promise((res) => {
     const child = exec(cmd);
     child.stdout.on('data', function (data) {
       console.log(`${logInfo} stdout: `, data);
       if (logInfo === 'changeNpmConfig' && !data.includes('registry.npmjs.org')) {
         useTaobaoMirror = true;
-        cancelChangeNpmConfig = () => {
-          exec('npm config set registry=http://npm.kylin.shuyun.com/');
-          console.log('重新设置代理');
-        };
       }
     });
     child.stderr.on('data', function (data) {
@@ -56,17 +52,16 @@ getNpmConfig()
   .then(() => {
     console.log('使用了淘宝镜像', useTaobaoMirror);
     if (useTaobaoMirror) {
-      return changeNpmConfig();
+      changeNpmConfig();
     }
   })
   .then(publish)
   .then(syncTaoBao)
-  .then(() => cancelChangeNpmConfig())
   .then(() => {
     console.log('发布成功');
     process.exit(0);
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('publish catch err', err);
     process.exit(1);
   });

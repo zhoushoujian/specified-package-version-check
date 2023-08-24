@@ -3,15 +3,21 @@ const checkDependenceVersion = require('./check');
 
 async function func() {
   await checkDependenceVersion({
-    dependenceArr: ['axios', '@shuyun-ep-team/eslint-config'],
+    dependenceArr: ['eslint-config-ts-base'],
+    useDepCheck: true,
     ignoreCheck: false,
     onlyWarn: false,
     checkAllLocalDependencies: false,
     ignoreSelf: true,
     remoteUrl: '',
+    uploadPackageInfoUrl: '',
+    autoFixOutdateDep: true,
+    silent: false,
+    enableGlobalCliCheck: false,
   });
 
-  console.log('end');
+  // eslint-disable-next-line no-console
+  console.log('finished!');
 }
 
 func();
